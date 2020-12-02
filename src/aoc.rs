@@ -18,3 +18,27 @@ pub fn read_input_file(filename: &str) -> Result<String, io::Error> {
 
     Ok(string)
 }
+
+pub fn start<F, G>(filename: &str, part1: F, part2: G)
+where
+    F: Fn(&str) -> Result<String, String>,
+    G: Fn(&str) -> Result<String, String>,
+{
+    let input = match read_input_file(filename) {
+        Ok(i) => i,
+        Err(e) => {
+            println!("Failed to load file: {}", e);
+            return;
+        }
+    };
+
+    match part1(&input) {
+        Ok(o) => println!("Part 1 (OK): {}", o),
+        Err(e) => println!("Part 1 (ERR): {}", e),
+    }
+
+    match part2(&input) {
+        Ok(o) => println!("Part 2 (OK): {}", o),
+        Err(e) => println!("Part 2 (ERR): {}", e),
+    }
+}
