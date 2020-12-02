@@ -41,18 +41,28 @@ impl<'a> Entry<'a> {
         let parts: Vec<_> = line.split(" ").collect();
 
         let (num1, num2) = {
-            let nums = parts[0]
+            let nums = parts
+                .get(0)
+                .ok_or_else(|| format!("Failed to get 'numbers' part of line"))?
                 .split("-")
                 .take(2)
                 .map(|s| s.parse::<u32>())
                 .collect::<Result<Vec<_>, _>>()
-                .map_err(|e| format!("Failed to parse number: {}", e))?;
+                .map_err(|e| format!("Failed to parse the 'numbers' part of line: {}", e))?;
 
             (nums[0], nums[1])
         };
 
-        let chr = parts[1].chars().nth(0).unwrap();
-        let password = parts[2];
+        let chr = parts
+            .get(1)
+            .ok_or_else(|| format!("Failed to get 'char' part of line"))?
+            .chars()
+            .nth(0)
+            .ok_or_else(|| format!("Failed to get first character at the 'char' part of line"))?;
+
+        let password = parts
+            .get(2)
+            .ok_or_else(|| format!("Failed to get 'password' part of line"))?;
 
         Ok(Self {
             nums: (num1, num2),
