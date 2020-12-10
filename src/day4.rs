@@ -7,239 +7,223 @@ fn main() {
     aoc::start("day4.txt", part1, part2);
 }
 
-struct PassportData<'a> {
-    byr: &'a str,
-    iyr: &'a str,
-    eyr: &'a str,
-    hgt: &'a str,
-    hcl: &'a str,
-    ecl: &'a str,
-    pid: &'a str,
-    cid: Option<&'a str>,
+pub fn part1_is_valid(pass: &str) -> Result<bool, String> {
+    let mut byr = None;
+    let mut iyr = None;
+    let mut eyr = None;
+    let mut hgt = None;
+    let mut hcl = None;
+    let mut ecl = None;
+    let mut pid = None;
+    let mut cid = None;
+
+    for line in pass.split("\n").filter(|s| !s.is_empty()) {
+        for kval in line.split(" ") {
+            let (key, val) = {
+                let split: Vec<&str> = kval.split(":").collect();
+                if split.len() != 2 {
+                    return Err(format!(
+                        "key:value pair ({:?}) length ({}) is not 2",
+                        split,
+                        split.len()
+                    ));
+                }
+
+                (split[0], split[1])
+            };
+
+            // pain and suffering
+            match key {
+                "byr" => match byr {
+                    Some(_) => return Ok(false),
+                    None => byr = Some(val),
+                },
+                "iyr" => match iyr {
+                    Some(_) => return Ok(false),
+                    None => iyr = Some(val),
+                },
+                "eyr" => match eyr {
+                    Some(_) => return Ok(false),
+                    None => eyr = Some(val),
+                },
+                "hgt" => match hgt {
+                    Some(_) => return Ok(false),
+                    None => hgt = Some(val),
+                },
+                "hcl" => match hcl {
+                    Some(_) => return Ok(false),
+                    None => hcl = Some(val),
+                },
+                "ecl" => match ecl {
+                    Some(_) => return Ok(false),
+                    None => ecl = Some(val),
+                },
+                "pid" => match pid {
+                    Some(_) => return Ok(false),
+                    None => pid = Some(val),
+                },
+                "cid" => match cid {
+                    Some(_) => return Ok(false),
+                    None => cid = Some(val),
+                },
+                other => return Ok(false),
+            }
+        }
+    }
+
+    if byr.is_none() {
+        return Ok(false);
+    }
+
+    if iyr.is_none() {
+        return Ok(false);
+    }
+
+    if eyr.is_none() {
+        return Ok(false);
+    }
+
+    if hgt.is_none() {
+        return Ok(false);
+    }
+
+    if hcl.is_none() {
+        return Ok(false);
+    }
+
+    if ecl.is_none() {
+        return Ok(false);
+    }
+
+    if pid.is_none() {
+        return Ok(false);
+    }
+
+    Ok(true)
 }
 
-impl<'a> PassportData<'a> {
-    pub fn new_part1(pass_data: &'a str) -> Result<Option<Self>, String> {
-        let mut byr = None;
-        let mut iyr = None;
-        let mut eyr = None;
-        let mut hgt = None;
-        let mut hcl = None;
-        let mut ecl = None;
-        let mut pid = None;
-        let mut cid = None;
+pub fn part2_is_valid(pass: &str) -> Result<bool, String> {
+    let mut byr = None;
+    let mut iyr = None;
+    let mut eyr = None;
+    let mut hgt = None;
+    let mut hcl = None;
+    let mut ecl = None;
+    let mut pid = None;
+    let mut cid = None;
 
-        for line in pass_data.split("\n").filter(|s| !s.is_empty()) {
-            for kval in line.split(" ") {
-                let (key, val) = {
-                    let split: Vec<&str> = kval.split(":").collect();
-                    if split.len() != 2 {
-                        return Err(format!(
-                            "key:value pair ({:?}) length ({}) is not 2",
-                            split,
-                            split.len()
-                        ));
-                    }
-
-                    (split[0], split[1])
-                };
-
-                // pain and suffering
-                match key {
-                    "byr" => match byr {
-                        Some(_) => return Ok(None),
-                        None => byr = Some(val),
-                    },
-                    "iyr" => match iyr {
-                        Some(_) => return Ok(None),
-                        None => iyr = Some(val),
-                    },
-                    "eyr" => match eyr {
-                        Some(_) => return Ok(None),
-                        None => eyr = Some(val),
-                    },
-                    "hgt" => match hgt {
-                        Some(_) => return Ok(None),
-                        None => hgt = Some(val),
-                    },
-                    "hcl" => match hcl {
-                        Some(_) => return Ok(None),
-                        None => hcl = Some(val),
-                    },
-                    "ecl" => match ecl {
-                        Some(_) => return Ok(None),
-                        None => ecl = Some(val),
-                    },
-                    "pid" => match pid {
-                        Some(_) => return Ok(None),
-                        None => pid = Some(val),
-                    },
-                    "cid" => match cid {
-                        Some(_) => return Ok(None),
-                        None => cid = Some(val),
-                    },
-                    other => return Ok(None),
+    for line in pass.split("\n").filter(|s| !s.is_empty()) {
+        for kval in line.split(" ") {
+            let (key, val) = {
+                let split: Vec<&str> = kval.split(":").collect();
+                if split.len() != 2 {
+                    return Err(format!(
+                        "key:value pair ({:?}) length ({}) is not 2",
+                        split,
+                        split.len()
+                    ));
                 }
+
+                (split[0], split[1])
+            };
+
+            // pain and suffering
+            match key {
+                "byr" => match byr {
+                    Some(_) => return Ok(false),
+                    None => byr = Some(val),
+                },
+                "iyr" => match iyr {
+                    Some(_) => return Ok(false),
+                    None => iyr = Some(val),
+                },
+                "eyr" => match eyr {
+                    Some(_) => return Ok(false),
+                    None => eyr = Some(val),
+                },
+                "hgt" => match hgt {
+                    Some(_) => return Ok(false),
+                    None => hgt = Some(val),
+                },
+                "hcl" => match hcl {
+                    Some(_) => return Ok(false),
+                    None => hcl = Some(val),
+                },
+                "ecl" => match ecl {
+                    Some(_) => return Ok(false),
+                    None => ecl = Some(val),
+                },
+                "pid" => match pid {
+                    Some(_) => return Ok(false),
+                    None => pid = Some(val),
+                },
+                "cid" => match cid {
+                    Some(_) => return Ok(false),
+                    None => cid = Some(val),
+                },
+                other => return Ok(false),
             }
         }
-
-        Ok(Some(Self {
-            byr: match byr {
-                Some(thing) => thing,
-                None => return Ok(None),
-            },
-            iyr: match iyr {
-                Some(thing) => thing,
-                None => return Ok(None),
-            },
-            eyr: match eyr {
-                Some(thing) => thing,
-                None => return Ok(None),
-            },
-            hgt: match hgt {
-                Some(thing) => thing,
-                None => return Ok(None),
-            },
-            hcl: match hcl {
-                Some(thing) => thing,
-                None => return Ok(None),
-            },
-            ecl: match ecl {
-                Some(thing) => thing,
-                None => return Ok(None),
-            },
-            pid: match pid {
-                Some(thing) => thing,
-                None => return Ok(None),
-            },
-            cid: cid,
-        }))
     }
 
-    pub fn new_part2(pass_data: &'a str) -> Result<Option<Self>, String> {
-        let mut byr = None;
-        let mut iyr = None;
-        let mut eyr = None;
-        let mut hgt = None;
-        let mut hcl = None;
-        let mut ecl = None;
-        let mut pid = None;
-        let mut cid = None;
-
-        for line in pass_data.split("\n").filter(|s| !s.is_empty()) {
-            for kval in line.split(" ") {
-                let (key, val) = {
-                    let split: Vec<&str> = kval.split(":").collect();
-                    if split.len() != 2 {
-                        return Err(format!(
-                            "key:value pair ({:?}) length ({}) is not 2",
-                            split,
-                            split.len()
-                        ));
-                    }
-
-                    (split[0], split[1])
-                };
-
-                // pain and suffering
-                match key {
-                    "byr" => match byr {
-                        Some(_) => return Ok(None),
-                        None => byr = Some(val),
-                    },
-                    "iyr" => match iyr {
-                        Some(_) => return Ok(None),
-                        None => iyr = Some(val),
-                    },
-                    "eyr" => match eyr {
-                        Some(_) => return Ok(None),
-                        None => eyr = Some(val),
-                    },
-                    "hgt" => match hgt {
-                        Some(_) => return Ok(None),
-                        None => hgt = Some(val),
-                    },
-                    "hcl" => match hcl {
-                        Some(_) => return Ok(None),
-                        None => hcl = Some(val),
-                    },
-                    "ecl" => match ecl {
-                        Some(_) => return Ok(None),
-                        None => ecl = Some(val),
-                    },
-                    "pid" => match pid {
-                        Some(_) => return Ok(None),
-                        None => pid = Some(val),
-                    },
-                    "cid" => match cid {
-                        Some(_) => return Ok(None),
-                        None => cid = Some(val),
-                    },
-                    other => return Ok(None),
-                }
-            }
-        }
-
-        Ok(Some(Self {
-            byr: match byr {
-                Some(thing) if matches!(parse_year(thing), Some(1920..=2002)) => thing,
-                _ => return Ok(None),
-            },
-            iyr: match iyr {
-                Some(thing) if matches!(parse_year(thing), Some(2010..=2020)) => thing,
-                _ => return Ok(None),
-            },
-            eyr: match eyr {
-                Some(thing) if matches!(parse_year(thing), Some(2020..=2030)) => thing,
-                _ => return Ok(None),
-            },
-            hgt: match hgt {
-                Some(thing) if matches!(parse_cm(thing), Some(150..=193)) => thing,
-                Some(thing) if matches!(parse_in(thing), Some(59..=76)) => thing,
-                _ => return Ok(None),
-            },
-            hcl: match hcl {
-                Some(thing) if is_hex_color(thing) => thing,
-                _ => return Ok(None),
-            },
-            ecl: match ecl {
-                Some(thing) if is_eye_color(thing) => thing,
-                _ => return Ok(None),
-            },
-            pid: match pid {
-                Some(thing) if is_passport_id(thing) => thing,
-                _ => return Ok(None),
-            },
-            cid: cid,
-        }))
+    match byr {
+        Some(x) if matches!(parse_year(x), Some(1920..=2002)) => {},
+        _ => return Ok(false),
     }
+
+    match iyr {
+        Some(x) if matches!(parse_year(x), Some(2010..=2020)) => {},
+        _ => return Ok(false),
+    }
+
+    match eyr {
+        Some(x) if matches!(parse_year(x), Some(2020..=2030)) => {},
+        _ => return Ok(false),
+    }
+
+    match hgt {
+        Some(x) if matches!(parse_cm(x), Some(150..=193)) => {}
+        Some(x) if matches!(parse_in(x), Some(59..=76)) => {}
+        _ => return Ok(false),
+    }
+
+    match hcl {
+        Some(x) if is_hex_color(x) => {}
+        _ => return Ok(false),
+    }
+
+    match ecl {
+        Some(x) if is_eye_color(x) => {}
+        _ => return Ok(false),
+    }
+
+    match pid {
+        Some(x) if is_passport_id(x) => {}
+        _ => return Ok(false),
+    }
+
+    Ok(true)
 }
 
 fn part1(input: &str) -> Result<String, String> {
-    let passports = parse_and_validate(input, PassportData::new_part1)?;
-
-    Ok(format!("{}", passports.len()))
+    Ok(format!("{}", parse_and_validate(input, part1_is_valid)?))
 }
 
 fn part2(input: &str) -> Result<String, String> {
-    let passports = parse_and_validate(input, PassportData::new_part2)?;
-
-    Ok(format!("{}", passports.len()))
+    Ok(format!("{}", parse_and_validate(input, part2_is_valid)?))
 }
 
-fn parse_and_validate<'a, F>(input: &'a str, parser: F) -> Result<Vec<PassportData<'a>>, String>
+fn parse_and_validate<'a, F>(input: &'a str, parser_fn: F) -> Result<usize, String>
 where
-    F: Fn(&'a str) -> Result<Option<PassportData<'a>>, String>,
+    F: Fn(&'a str) -> Result<bool, String>,
 {
-    let mut result = Vec::new();
-
-    for entry in input.split("\n\n") {
-        if let Some(pass) = parser(entry)? {
-            result.push(pass);
-        }
-    }
-
-    Ok(result)
+    Ok(input
+        .split("\n\n")
+        .map(parser_fn)
+        .collect::<Result<Vec<_>, String>>()?
+        .iter()
+        .filter(|&&x| x)
+        .count())
 }
 
 fn parse_year(string: &str) -> Option<u32> {
@@ -269,10 +253,9 @@ fn parse_in(string: &str) -> Option<u32> {
 fn is_hex_color(string: &str) -> bool {
     string.len() == 7
         && string.chars().nth(0).unwrap() == '#'
-        && string
-            .chars()
-            .skip(1)
-            .fold(true, |result, item| result && matches!(item, '0'..='9' | 'a'..='f'))
+        && string.chars().skip(1).fold(true, |result, item| {
+            result && matches!(item, '0'..='9' | 'a'..='f')
+        })
 }
 
 fn is_eye_color(string: &str) -> bool {
@@ -284,7 +267,9 @@ fn is_eye_color(string: &str) -> bool {
 
 fn is_passport_id(string: &str) -> bool {
     string.len() == 9
-        && string.chars().fold(true, |result, item| result && item.is_digit(10))
+        && string
+            .chars()
+            .fold(true, |result, item| result && item.is_digit(10))
 }
 
 #[cfg(test)]
