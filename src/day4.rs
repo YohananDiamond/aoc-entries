@@ -1,6 +1,3 @@
-#![allow(unused_variables)]
-#![allow(dead_code)]
-
 mod aoc;
 
 fn main() {
@@ -66,7 +63,7 @@ pub fn part1_is_valid(pass: &str) -> Result<bool, String> {
                     Some(_) => return Ok(false),
                     None => cid = Some(val),
                 },
-                other => return Ok(false),
+                _ => return Ok(false),
             }
         }
     }
@@ -161,23 +158,23 @@ pub fn part2_is_valid(pass: &str) -> Result<bool, String> {
                     Some(_) => return Ok(false),
                     None => cid = Some(val),
                 },
-                other => return Ok(false),
+                _ => return Ok(false),
             }
         }
     }
 
     match byr {
-        Some(x) if matches!(parse_year(x), Some(1920..=2002)) => {},
+        Some(x) if matches!(parse_year(x), Some(1920..=2002)) => {}
         _ => return Ok(false),
     }
 
     match iyr {
-        Some(x) if matches!(parse_year(x), Some(2010..=2020)) => {},
+        Some(x) if matches!(parse_year(x), Some(2010..=2020)) => {}
         _ => return Ok(false),
     }
 
     match eyr {
-        Some(x) if matches!(parse_year(x), Some(2020..=2030)) => {},
+        Some(x) if matches!(parse_year(x), Some(2020..=2030)) => {}
         _ => return Ok(false),
     }
 

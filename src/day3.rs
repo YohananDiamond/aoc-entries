@@ -1,18 +1,10 @@
 mod aoc;
+mod math;
+
+use math::Point2;
 
 fn main() {
     aoc::start("day3.txt", part1, part2);
-}
-
-struct Point2<T> {
-    x: T,
-    y: T,
-}
-
-impl<T> Point2<T> {
-    pub fn new(x: T, y: T) -> Self {
-        Self { x, y }
-    }
 }
 
 #[derive(Debug)]
