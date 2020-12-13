@@ -24,21 +24,25 @@ where
     F: Fn(&str) -> Result<String, String>,
     G: Fn(&str) -> Result<String, String>,
 {
-    let input = match read_input_file(filename) {
-        Ok(i) => i,
+    println!("Current input file: {}", filename);
+    println!("{{");
+
+    match read_input_file(filename) {
+        Ok(input) => {
+            match part1(&input) {
+                Ok(o) => println!("Part 1 (OK): {}", o),
+                Err(e) => println!("Part 1 (ERR): {}", e),
+            }
+
+            match part2(&input) {
+                Ok(o) => println!("Part 2 (OK): {}", o),
+                Err(e) => println!("Part 2 (ERR): {}", e),
+            }
+        }
         Err(e) => {
             println!("Failed to load file: {}", e);
-            return;
         }
     };
 
-    match part1(&input) {
-        Ok(o) => println!("Part 1 (OK): {}", o),
-        Err(e) => println!("Part 1 (ERR): {}", e),
-    }
-
-    match part2(&input) {
-        Ok(o) => println!("Part 2 (OK): {}", o),
-        Err(e) => println!("Part 2 (ERR): {}", e),
-    }
+    println!("}}");
 }
