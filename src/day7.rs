@@ -3,10 +3,10 @@ mod math;
 
 use std::collections::HashMap;
 
-type BagRuleMap = HashMap<String, Vec<BagAmount>>;
+type BagRuleMap = HashMap<String, Vec<BagRule>>;
 
 #[derive(Debug, Clone)]
-struct BagAmount {
+struct BagRule {
     amount: usize,
     color: String,
 }
@@ -18,7 +18,6 @@ fn main() {
 
 fn part1(input: &str) -> Result<String, String> {
     let rules = get_bag_rules(input)?;
-    let colors = rules.iter().map(|(color, _)| color);
 
     fn contains_shiny(color: &str, map: &BagRuleMap) -> bool {
         let rules = map.get(color).unwrap();
@@ -44,7 +43,6 @@ fn part1(input: &str) -> Result<String, String> {
 
 fn part2(input: &str) -> Result<String, String> {
     let rules = get_bag_rules(input)?;
-    let colors = rules.iter().map(|(color, _)| color);
 
     fn bags_inside(color: &str, map: &BagRuleMap) -> usize {
         let mut total = 0usize;
@@ -65,6 +63,8 @@ fn get_bag_rules(input: &str) -> Result<BagRuleMap, String> {
         .split("\n")
         .filter(|s| !s.is_empty())
         .map(|line| {
+            let mut words = line.split(" ");
+
             fn forward_expect<'a>(
                 input: Option<&'a str>,
                 expectation: Option<&str>,
@@ -75,8 +75,6 @@ fn get_bag_rules(input: &str) -> Result<BagRuleMap, String> {
                     Err(format!("Expected {:?}, found {:?}", expectation, input))
                 }
             }
-
-            let mut words = line.split(" ");
 
             let color = format!(
                 "{} {}",
@@ -101,7 +99,7 @@ fn get_bag_rules(input: &str) -> Result<BagRuleMap, String> {
                     Ok((color, vec![]))
                 }
                 Some(_) => {
-                    let mut bags = Vec::new();
+                    let mut rules = Vec::new();
 
                     let result = loop {
                         let possible_num = words
@@ -121,11 +119,11 @@ fn get_bag_rules(input: &str) -> Result<BagRuleMap, String> {
 
                             match words.next() {
                                 Some("bag,") | Some("bags,") => {
-                                    bags.push(BagAmount { amount, color })
+                                    rules.push(BagRule { amount, color })
                                 }
                                 Some("bag.") | Some("bags.") => {
-                                    bags.push(BagAmount { amount, color });
-                                    break bags;
+                                    rules.push(BagRule { amount, color });
+                                    break rules;
                                 }
                                 Some(other) => {
                                     return Err(format!(

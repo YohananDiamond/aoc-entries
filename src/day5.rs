@@ -64,6 +64,23 @@ fn seat_pos(instruction: &str) -> Result<(u32, u32), String> {
         ));
     }
 
+    // range.y = (&instruction[0..7])
+    //     .chars()
+    //     .enumerate()
+    //     .fold(Ok(range.y), |old, (i, half)| {
+    //         match old {
+    //             Ok(inner) => match half {
+    //                 'F' => Ok(lower_half(inner)),
+    //                 'B' => Ok(upper_half(inner)),
+    //                 other => Err(format!(
+    //                     "Unknown meaning for char {:?} at index #{}",
+    //                     other, i
+    //                 )),
+    //             }
+    //             Err(e) => Err(e),
+    //         }
+    //     })?;
+
     for (i, half) in (&instruction[0..7]).chars().enumerate() {
         match half {
             'F' => range.y = lower_half(range.y),
