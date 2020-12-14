@@ -64,48 +64,55 @@ fn seat_pos(instruction: &str) -> Result<(u32, u32), String> {
         ));
     }
 
-    // range.y = (&instruction[0..7])
-    //     .chars()
-    //     .enumerate()
-    //     .fold(Ok(range.y), |old, (i, half)| {
-    //         match old {
-    //             Ok(inner) => match half {
-    //                 'F' => Ok(lower_half(inner)),
-    //                 'B' => Ok(upper_half(inner)),
-    //                 other => Err(format!(
-    //                     "Unknown meaning for char {:?} at index #{}",
-    //                     other, i
-    //                 )),
-    //             }
-    //             Err(e) => Err(e),
+    range.y = (&instruction[0..7])
+        .chars()
+        .enumerate()
+        .try_fold(range.y, |old, (i, half)| match half {
+            'F' => Ok(lower_half(old)),
+            'B' => Ok(upper_half(old)),
+            other => Err(format!(
+                "Unknown meaning for char {:?} at index #{}",
+                other, i
+            )),
+        })?;
+
+    // for (i, half) in (&instruction[0..7]).chars().enumerate() {
+    //     match half {
+    //         'F' => range.y = lower_half(range.y),
+    //         'B' => range.y = upper_half(range.y),
+    //         half => {
+    //             return Err(format!(
+    //                 "Unknown meaning for char {:?} at index #{}",
+    //                 half, i
+    //             ))
     //         }
-    //     })?;
+    //     }
+    // }
 
-    for (i, half) in (&instruction[0..7]).chars().enumerate() {
-        match half {
-            'F' => range.y = lower_half(range.y),
-            'B' => range.y = upper_half(range.y),
-            half => {
-                return Err(format!(
-                    "Unknown meaning for char {:?} at index #{}",
-                    half, i
-                ))
-            }
-        }
-    }
+    range.x = (&instruction[7..10])
+        .chars()
+        .enumerate()
+        .try_fold(range.x, |old, (i, half)| match half {
+            'L' => Ok(lower_half(old)),
+            'R' => Ok(upper_half(old)),
+            other => Err(format!(
+                "Unknown meaning for char {:?} at index #{}",
+                other, i
+            )),
+        })?;
 
-    for (i, half) in (&instruction[7..10]).chars().enumerate() {
-        match half {
-            'L' => range.x = lower_half(range.x),
-            'R' => range.x = upper_half(range.x),
-            half => {
-                return Err(format!(
-                    "Unknown meaning for char {:?} at index #{}",
-                    half, i
-                ))
-            }
-        }
-    }
+    // for (i, half) in (&instruction[7..10]).chars().enumerate() {
+    //     match half {
+    //         'L' => range.x = lower_half(range.x),
+    //         'R' => range.x = upper_half(range.x),
+    //         half => {
+    //             return Err(format!(
+    //                 "Unknown meaning for char {:?} at index #{}",
+    //                 half, i
+    //             ))
+    //         }
+    //     }
+    // }
 
     let (row, _) = range.y; // lower value
     let (_, column) = range.x; // upper value
