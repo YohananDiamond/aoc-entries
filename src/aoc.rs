@@ -46,3 +46,25 @@ where
 
     println!("}}");
 }
+
+/// Prints self and returns again the same value.
+/// Useful for debugging.
+pub trait PrintAndForward: Sized {
+    fn print_forward(self) -> Self;
+    fn eprint_forward(self) -> Self;
+}
+
+impl<T> PrintAndForward for T
+where
+    T: Sized + std::fmt::Display,
+{
+    fn print_forward(self) -> Self {
+        println!("{}", self);
+        self
+    }
+
+    fn eprint_forward(self) -> Self {
+        eprintln!("{}", self);
+        self
+    }
+}
