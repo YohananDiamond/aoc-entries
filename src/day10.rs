@@ -1,5 +1,4 @@
 mod aoc;
-use aoc::PrintAndForward;
 
 fn main() {
     aoc::start("day10_example.txt", part1, part2);
