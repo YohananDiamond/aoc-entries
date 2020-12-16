@@ -51,7 +51,6 @@ where
 /// Useful for debugging.
 pub trait PrintAndForward: Sized {
     fn print_forward(self) -> Self;
-    fn eprint_forward(self) -> Self;
 }
 
 impl<T> PrintAndForward for T
@@ -62,9 +61,20 @@ where
         println!("{}", self);
         self
     }
+}
 
-    fn eprint_forward(self) -> Self {
-        eprintln!("{}", self);
+/// Prints the debug representation of self and returns again the same value.
+/// Useful for debugging.
+pub trait DebugAndForward: Sized {
+    fn debug_forward(self) -> Self;
+}
+
+impl<T> DebugAndForward for T
+where
+    T: Sized + std::fmt::Debug,
+{
+    fn debug_forward(self) -> Self {
+        println!("{:?}", self);
         self
     }
 }
