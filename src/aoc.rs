@@ -49,10 +49,12 @@ where
 
 /// Prints self and returns again the same value.
 /// Useful for debugging.
+#[deprecated]
 pub trait PrintAndForward: Sized {
     fn print_forward(self) -> Self;
 }
 
+#[allow(deprecated)]
 impl<T> PrintAndForward for T
 where
     T: Sized + std::fmt::Display,
@@ -65,10 +67,12 @@ where
 
 /// Prints the debug representation of self and returns again the same value.
 /// Useful for debugging.
+#[deprecated]
 pub trait DebugAndForward: Sized {
     fn debug_forward(self) -> Self;
 }
 
+#[allow(deprecated)]
 impl<T> DebugAndForward for T
 where
     T: Sized + std::fmt::Debug,
@@ -77,4 +81,49 @@ where
         println!("{:?}", self);
         self
     }
+}
+
+/// Forwards a value through a function.
+pub trait Forward: Sized {
+    fn forward<F, O>(self, f: F) -> O
+    where
+        F: FnOnce(Self) -> O,
+    {
+        f(self)
+    }
+}
+
+impl<T> Forward for T {}
+
+/// Checks if an expression `expr` matches a set of patterns.
+/// If it matches, returns `Ok(expr)`
+/// If it doesnt, returns `Err(msg)` where `msg` is a string containing an error message.
+#[macro_export]
+macro_rules! expect_match {
+    ($expression:expr, $( $pattern:pat )|+ $( if $guard:expr )? $(,)?) => ({
+        let expr = $expression;
+
+        match &expr {
+            $( $pattern )|+ $( if $guard )? => ::std::result::Result::Ok(expr),
+            _ => ::std::result::Result::Err(format!("Expression {{ {} }} -> {:?} does not match with {}", stringify!($expression), expr, stringify!($( $pattern )|+ $( if $guard )?))),
+        }
+    })
+}
+
+/// Parses a number, returning `Ok(num)` if successful or `Err(e)`, where `e` is a sring message with a detailed
+/// description of the errror.
+pub fn parse_number<N, I>(input: I) -> Result<N, String>
+where
+    N: std::str::FromStr,
+    I: AsRef<str> + std::fmt::Debug,
+<N as std::str::FromStr>::Err: std::fmt::Display,
+{
+    input
+        .as_ref()
+        .parse::<N>()
+        .map_err(|err| format!("Failed to parse number string {:?}: {}", input, err))
+}
+
+pub fn dummy_part(_: &str) -> Result<String, String> {
+    Ok(format!("DUMMY"))
 }
