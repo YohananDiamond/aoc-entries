@@ -50,6 +50,7 @@ impl Map {
     }
 
     #[inline]
+    #[allow(unused)]
     pub fn line_len(&self) -> usize {
         self.line_len
     }
