@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use std::fs::File;
 use std::io::{self, Read};
 use std::path::PathBuf;
@@ -19,7 +21,16 @@ pub fn read_input_file(filename: &str) -> Result<String, io::Error> {
     Ok(string)
 }
 
+#[inline(always)]
 pub fn start<F, G>(filename: &str, part1: F, part2: G)
+where
+    F: Fn(&str) -> Result<String, String>,
+    G: Fn(&str) -> Result<String, String>,
+{
+    start_with_file(filename, part1, part2);
+}
+
+pub fn start_with_file<F, G>(filename: &str, part1: F, part2: G)
 where
     F: Fn(&str) -> Result<String, String>,
     G: Fn(&str) -> Result<String, String>,
@@ -43,6 +54,27 @@ where
             println!("Failed to load file: {}", e);
         }
     };
+
+    println!("}}");
+}
+
+pub fn start_with_input<F, G>(input: &str, part1: F, part2: G)
+where
+    F: Fn(&str) -> Result<String, String>,
+    G: Fn(&str) -> Result<String, String>,
+{
+    println!("Current input: {:?}", input);
+    println!("{{");
+
+    match part1(&input) {
+        Ok(o) => println!("Part 1 (OK): {}", o),
+        Err(e) => println!("Part 1 (ERR): {}", e),
+    }
+
+    match part2(&input) {
+        Ok(o) => println!("Part 2 (OK): {}", o),
+        Err(e) => println!("Part 2 (ERR): {}", e),
+    }
 
     println!("}}");
 }
@@ -124,6 +156,7 @@ where
         .map_err(|err| format!("Failed to parse number string {:?}: {}", input, err))
 }
 
+#[allow(dead_code)]
 pub fn dummy_part(_: &str) -> Result<String, String> {
     Ok(format!("DUMMY"))
 }
