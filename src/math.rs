@@ -12,7 +12,6 @@ impl<T> Point2<T> {
     }
 }
 
-
 /// Returns the lowest common multiple of two numbers.
 pub fn lcm(a: usize, b: usize) -> usize {
     if a == 0 && b == 0 {

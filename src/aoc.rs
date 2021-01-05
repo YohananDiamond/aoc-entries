@@ -3,6 +3,7 @@
 use std::fs::File;
 use std::io::{self, Read};
 use std::path::PathBuf;
+use std::str::FromStr;
 
 pub fn input_dir() -> PathBuf {
     let mut p = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
@@ -146,9 +147,9 @@ macro_rules! expect_match {
 /// description of the errror.
 pub fn parse_number<N, I>(input: I) -> Result<N, String>
 where
-    N: std::str::FromStr,
+    N: FromStr,
+    N::Err: std::fmt::Display,
     I: AsRef<str> + std::fmt::Debug,
-<N as std::str::FromStr>::Err: std::fmt::Display,
 {
     input
         .as_ref()
@@ -158,5 +159,5 @@ where
 
 #[allow(dead_code)]
 pub fn dummy_part(_: &str) -> Result<String, String> {
-    Ok(format!("DUMMY"))
+    Ok(format!("<Dummy>"))
 }

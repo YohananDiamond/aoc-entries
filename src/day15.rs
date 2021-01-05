@@ -41,7 +41,9 @@ fn common(numbers: &[Number], stop_at: Turn) -> Result<Number, String> {
         return Err(format!("Input is empty"));
     } else if has_repeated(&numbers) {
         // I'm lazy
-        return Err(format!("Unhandled case - number list with repeated starting numbers"));
+        return Err(format!(
+            "Unhandled case - number list with repeated starting numbers"
+        ));
     }
 
     let mut spoken_numbers: HashMap<Number, Turn> = HashMap::new();
@@ -74,26 +76,22 @@ fn common(numbers: &[Number], stop_at: Turn) -> Result<Number, String> {
             Occupied(mut entry) => {
                 let last_spoken_turn = *entry.get(); // the last turn this number was spoken in
                 entry.insert(previous_turn); // the last turn it was spoken in is now the previous turn
-                // println!("OCCUPIED (last spoken at T{}), returning {}", last_spoken_turn, previous_turn - last_spoken_turn);
+                                             // println!("OCCUPIED (last spoken at T{}), returning {}", last_spoken_turn, previous_turn - last_spoken_turn);
                 previous_number = previous_turn - last_spoken_turn; // update the "previous number"
-            },
+            }
             Vacant(entry) => {
                 entry.insert(previous_turn); // the last turn it was spoken in is now the previous turn
-                // println!("VACANT, returning 0");
+                                             // println!("VACANT, returning 0");
                 previous_number = 0; // it has been said zero times before, so 0
-            },
+            }
         }
     }
 
     Ok(previous_number)
 }
 
-fn has_repeated<T>(slice: &[T]) -> bool
-where
-    T: Eq,
-{
-    (0..slice.len())
-        .any(|i| slice[i+1..].contains(&slice[i]))
+fn has_repeated<T: Eq>(slice: &[T]) -> bool {
+    (0..slice.len()).any(|i| slice[i + 1..].contains(&slice[i]))
 }
 
 #[cfg(test)]
