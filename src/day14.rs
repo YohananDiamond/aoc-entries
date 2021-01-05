@@ -329,23 +329,3 @@ mod bit_tools {
         }
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::bit_tools::BitMask;
-    use super::PartConfig;
-
-    #[test]
-    fn basic_part1_bitmask() {
-        let bitmask =
-            BitMask::new("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX10X01", PartConfig::Part1).unwrap();
-        let val = 0b0001111111100000;
-
-        assert_eq!(bitmask.applied_on(val), 0b0001111111110001);
-    }
-
-    #[test]
-    fn default_bitmask() {
-        Bitmask::default();
-    }
-}
