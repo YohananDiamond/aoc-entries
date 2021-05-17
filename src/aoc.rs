@@ -4,6 +4,7 @@ use std::fs::File;
 use std::io::{self, Read};
 use std::path::PathBuf;
 use std::str::FromStr;
+use std::iter::Peekable;
 
 pub fn input_dir() -> PathBuf {
     let mut p = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
@@ -155,6 +156,28 @@ where
         .as_ref()
         .parse::<N>()
         .map_err(|err| format!("Failed to parse number string {:?}: {}", input, err))
+}
+
+pub fn iter_consume_number<N, I>(iter: &mut Peekable<I>) -> Option<Result<N, String>>
+where
+    N: FromStr,
+    N::Err: std::fmt::Display,
+    I: Iterator<Item=char>,
+{
+    let mut acc = String::new();
+
+    loop {
+        match iter.peek() {
+            Some(d) if d.is_digit(10) => acc.push(iter.next().unwrap()),
+            _ => break,
+        }
+    }
+
+    if acc.is_empty() {
+        None
+    } else {
+        Some(parse_number(&acc))
+    }
 }
 
 #[allow(dead_code)]

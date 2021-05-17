@@ -1,0 +1,9 @@
+// -*- mode: rust -*-
+
+WHITESPACE = _{ " " }
+
+line = { SOI ~ expr ~ EOI }
+
+expr = { number ~ (operator ~ expr)? }
+number = @{ ASCII_DIGIT+ }
+operator = @{ "+" | "*" }
