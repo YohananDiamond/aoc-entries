@@ -1,3 +1,3 @@
-# Advent of Code 2020 Entries
+# Advent of Code entries
 
-Here I'm placing my Advent of Code 2020 entries.
+uhh
