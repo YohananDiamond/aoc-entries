@@ -1,0 +1,22 @@
+Trying to explain my rationale for the calculations in day 06.
+
+7 seconds
+    charge 0 sec. -> 0mm/sec. for 7 sec. -> 0mm total
+    charge 1 sec. -> 1mm/sec. for 6 sec. -> 6mm total
+    charge 2 sec. -> 2mm/sec. for 5 sec. -> 10mm total
+    charge 3 sec. -> 3mm/sec. for 4 sec. -> 12mm total
+    charge 4 sec. -> 4mm/sec. for 3 sec. -> 12mm total
+    charge 5 sec. -> 5mm/sec. for 2 sec. -> 10mm total
+    charge 6 sec. -> 6mm/sec. for 1 sec. -> 6mm total
+    charge 7 sec. -> 7mm/sec. for 0 sec. -> 0mm total
+    charge n sec. -> n mm/sec. for 7-n sec. -> [n * 7-n]mm total
+
+So the formula for the total distance T for a race of S seconds, while charging for n of these seconds, must be:
+    T: sec -> mm
+    T(n) = n * (S - n)
+
+If we have a record of R milimiters, we have to satisfy:
+    T(n) > R
+    n * (S - n) > R
+
+I feel like there could be a simpler, O(1) way to calculate this, but I'll have to go with O(n) cuz I'm dumb.
